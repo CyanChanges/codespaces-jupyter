@@ -1,0 +1,16 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+  },
+  "customization": {
+    "codespaces": {
+      "repositories": {
+        "CyanChanges/temp_projects": {
+          "permissions": {
+            "content": "write"
+          }
+        }
+      }
+    }
+  }
+}
