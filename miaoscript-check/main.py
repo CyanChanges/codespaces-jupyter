@@ -1,11 +1,9 @@
-import time
 import logging
 import asyncio
 from typing import Sequence, Any
 
 from aiohttp import ClientSession, ClientResponseError
 from rich import print
-from rich.pretty import pprint
 from rich.logging import RichHandler
 from rich.console import Console
 from rich.traceback import install
@@ -105,18 +103,19 @@ def print_package(pkg_info):
         f"{pkg_info['package']['version']}" 
     )
 
-if __name__ == '__main__':
+def main():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+    
+    m_pub, m_by_dep = loop.run_until_complete(scan_once())
 
-    for _ in range(0, 15 if False else 1):
-        m_pub, m_by_dep = loop.run_until_complete(scan_once())
+    [print_package(match) for match in m_pub]
+    [print_package(match) for match in m_by_dep]
 
-        [print_package(match) for match in m_pub]
-        [print_package(match) for match in m_by_dep]
+    logger.debug(m_pub)
+    logger.debug(m_by_dep)
+    
+    logger.info("[green]complete", extra={"markup": True})
 
-        logger.debug(m_pub)
-
-        logger.info("[green]complete", extra={"markup": True})
-
-        (time.sleep(90)) if False else None
+if __name__ == '__main__':
+     main()
